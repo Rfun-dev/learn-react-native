@@ -8,6 +8,7 @@ import {
   FlatList,
 } from "react-native";
 import { useState } from "react";
+import Goalinput from "./component/GoalInput";
 
 export default function App() {
   const [enteredGoalText, setEnteredGoalText] = useState("");
@@ -40,11 +41,7 @@ export default function App() {
       <View style={styles.containerGoals}>
         <FlatList
           data={listGoals}
-          renderItem={(goal) => (
-            <View style={styles.goalItem}>
-              <Text style={styles.goalText}>{goal.item.text}</Text>
-            </View>
-          )}
+          renderItem={(goal) => <Goalinput text={goal.item.text}/>}
         ></FlatList>
       </View>
     </View>
@@ -78,16 +75,5 @@ const styles = StyleSheet.create({
 
   containerGoals: {
     flex: 5,
-  },
-
-  goalItem: {
-    margin: 8,
-    padding: 8,
-    borderRadius: 6,
-    backgroundColor: "#5e0acc",
-  },
-
-  goalText: {
-    color: "white",
   },
 });
