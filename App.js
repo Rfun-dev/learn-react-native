@@ -13,6 +13,7 @@ import GoalItem from "./component/GoalItem";
 
 export default function App() {
   const [listGoals, setListGoals] = useState([]);
+  const [visible,setVisible] = useState(false);
 
   const addGoalHandler = (textValue) => {
     setListGoals((prev) => [
@@ -28,9 +29,19 @@ export default function App() {
     setListGoals((prev) => prev.filter((item) => item.key != id ));
   };
 
+  const onVisibleHandler = () => {
+    setVisible(true);
+  }
+
+  const onCancelHandler = (value) => {
+    setVisible(value)
+    console.log(value);
+  }
+
   return (
     <View style={styles.container}>
-      <Goalinput onAddGoal={addGoalHandler} />
+      <Button onPress={onVisibleHandler} title="Show Input"/>
+      <Goalinput onAddGoal={addGoalHandler} isVisible={visible} onCancel={onCancelHandler}/>
       <View style={styles.containerGoals}>
         <FlatList
           data={listGoals}
