@@ -1,24 +1,49 @@
-import { StyleSheet,View,Text } from "react-native";
+import { StyleSheet, View, TextInput, Button } from "react-native";
+import { useState } from "react";
 
-const Goalinput = (props) => {
+const GoalInput = (props) => {
+  const [enteredGoalText, setEnteredGoalText] = useState("");
+
+  const goalInputHandler = (enteredText) => {
+    setEnteredGoalText(enteredText);
+  };
+
+  const addGoalHandler = () => {
+    props.onAddGoal(enteredGoalText);
+    setEnteredGoalText("");
+  };
+
   return (
-    <View style={styles.goalItem}>
-      <Text style={styles.goalText}>{props.text}</Text>
+    <View style={styles.containerInput}>
+      <TextInput
+        style={styles.textInput}
+        placeholder="Input your goals"
+        onChangeText={goalInputHandler}
+        value={enteredGoalText}
+      />
+      <Button title="Save" onPress={addGoalHandler}></Button>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-    goalItem: {
-        margin: 8,
-        padding: 8,
-        borderRadius: 6,
-        backgroundColor: "#5e0acc",
-      },
-    
-      goalText: {
-        color: "white",
-      },
-})
+  containerInput: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingBottom: 24,
+    borderBottomWidth: 1,
+    borderBottomColor: "#cccccc",
+  },
 
-export default Goalinput;
+  textInput: {
+    width: "70%",
+    marginRight: 8,
+    borderWidth: 1,
+    padding: 8,
+    borderColor: "#cccccc",
+  },
+});
+
+export default GoalInput;

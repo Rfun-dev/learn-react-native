@@ -9,39 +9,38 @@ import {
 } from "react-native";
 import { useState } from "react";
 import Goalinput from "./component/GoalInput";
+import GoalItem from "./component/GoalItem";
 
 export default function App() {
-  const [enteredGoalText, setEnteredGoalText] = useState("");
   const [listGoals, setListGoals] = useState([]);
 
-  const goalInputHandler = (enteredText) => {
-    setEnteredGoalText(enteredText);
+  const addGoalHandler = (textValue) => {
+    setListGoals((prev) => [
+      ...prev,
+      {
+        key: +new Date(),
+        text: textValue,
+      },
+    ]);
   };
 
-  const addGoalHandler = () => {
-    setListGoals((prev) => [
-      ...prev, 
-      {
-        key : +new Date(),
-        text : enteredGoalText,
-      }
-    ]);
+  const deleteGoalHandler = (id) => {
+    setListGoals((prev) => prev.filter((item) => item.key != id ));
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.containerInput}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Input your goals"
-          onChangeText={goalInputHandler}
-        />
-        <Button title="Save" onPress={addGoalHandler}></Button>
-      </View>
+      <Goalinput onAddGoal={addGoalHandler} />
       <View style={styles.containerGoals}>
         <FlatList
           data={listGoals}
-          renderItem={(goal) => <Goalinput text={goal.item.text}/>}
+          renderItem={(goal) => (
+            <GoalItem
+              id={goal.item.key}
+              text={goal.item.text}
+              onDeleteGoal={deleteGoalHandler}
+            />
+          )}
         ></FlatList>
       </View>
     </View>
@@ -53,24 +52,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 50,
     paddingHorizontal: 16,
-  },
-
-  containerInput: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingBottom: 24,
-    borderBottomWidth: 1,
-    borderBottomColor: "#cccccc",
-  },
-
-  textInput: {
-    width: "70%",
-    marginRight: 8,
-    borderWidth: 1,
-    padding: 8,
-    borderColor: "#cccccc",
   },
 
   containerGoals: {
